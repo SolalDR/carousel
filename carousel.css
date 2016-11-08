@@ -29,7 +29,7 @@
     background-repeat: no-repeat; }
     .carousel .leftSelector:hover {
       background-color: rgba(0, 0, 0, 0.5);
-      background-image: url(../img/left.png);
+      background-image: url(img/left.png);
       background-size: 30%;
       background-position: center;
       background-repeat: no-repeat; }
@@ -46,7 +46,7 @@
     background-repeat: no-repeat; }
     .carousel .rightSelector:hover {
       background-color: rgba(0, 0, 0, 0.5);
-      background-image: url(../img/right.png);
+      background-image: url(img/right.png);
       background-size: 30%;
       background-position: center;
       background-repeat: no-repeat; }

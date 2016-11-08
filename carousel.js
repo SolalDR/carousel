@@ -209,8 +209,7 @@ Carousel.prototype.launch = function(){
 
 
 var carousel = new Carousel(document.getElementById("carousel"), {
-  // displayArrowSelectors : false,
+  displayArrowSelectors : false,
   interval : 3000,
   stopOnMouseHover : true
 });
-console.log(carousel);
