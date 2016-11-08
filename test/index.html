@@ -6,11 +6,18 @@
     <link rel="stylesheet" href="../carousel.css">
   </head>
   <body>
-    <div class="carousel theme-light" id="carousel" style="background-color:#fff0da;" data-autoload data-stop-on-mouse="true">
-      <img src="image1.jpg" alt="Image2" title="" class="item-carousel active" data-animation="opacity"/>
+    <div class="carousel theme-light" id="carousel">
+      <img src="image1.jpg" alt="Image2" title="" class="item-carousel" data-animation="opacity"/>
       <img src="image2.jpg" alt="Image3" title="" class="item-carousel" data-animation="opacity"/>
       <img src="image3.jpg" alt="Image4" title="" class="item-carousel" data-animation="opacity"/>
     </div>
     <script type="text/javascript" src="../carousel.js"></script>
+    <script>
+      var carousel = new Carousel(document.getElementById("carousel"), {
+        displayArrowSelectors : false,
+        autoload : true,
+        interval : 3000
+      });
+    </script>
   </body>
 </html>

@@ -17,6 +17,7 @@ function Carousel(el, config = {}){
   }
   // Si il n'y en a pas par défault
   if(!this.currentItem.el){
+    this.items[0].className += " active";
     this.currentItem.el = this.items[0];
     this.currentItem.rank = 0;
   }
@@ -114,7 +115,7 @@ Carousel.prototype.updateCurrentItem = function(rank){
 }
 
 Carousel.prototype.generateSelectors = function(){
-  if(this.displayArrowSelectors){
+  if(this.displayArrowSelectors && !this.controls.left && !this.controls.right){
     var slideLeft = document.createElement("div");
     var slideRight = document.createElement("div");
     slideLeft.className = "leftSelector";
@@ -125,7 +126,7 @@ Carousel.prototype.generateSelectors = function(){
     this.controls.right = slideRight;
   }
 
-  if(this.displayButtonSelectors) {
+  if(this.displayButtonSelectors && !this.controls.buttons) {
     var buttonContainer = document.createElement("div")
     var buttons = [];
     for (i = 0; i < this.items.length; i++) {
@@ -199,17 +200,13 @@ Carousel.prototype.stopInterval = function(){
 
 Carousel.prototype.launch = function(){
   // On génère les sélecteur
-  this.generateSelectors();
-  this.initEvents();
-  this.updateButtonsStatus();
-  if(this.interval){
-    this.startIntervalFunction(this);
+  if(!this.launched){
+    this.launched = true;
+    this.generateSelectors();
+    this.initEvents();
+    this.updateButtonsStatus();
+    if(this.interval){
+      this.startIntervalFunction(this);
+    }
   }
 }
-
-
-var carousel = new Carousel(document.getElementById("carousel"), {
-  displayArrowSelectors : false,
-  interval : 3000,
-  stopOnMouseHover : true
-});
