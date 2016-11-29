@@ -158,17 +158,15 @@ Carousel.prototype.generateSelectors = function(){
   }
 }
 
-
-Carousel.prototype.next = function(){
-  var futurItemRank = this.getNextItemRank();
-  this.updateCurrentItem(futurItemRank);
+Carousel.prototype.move = function(direction){
+  if(direction==="next"){
+    var futurItemRank = this.getNextItemRank();
+    this.updateCurrentItem(futurItemRank);
+  } else if(direction==="previous"){
+    var futurItemRank = this.getPreviousItemRank();
+    this.updateCurrentItem(futurItemRank);
+  }
 }
-Carousel.prototype.previous = function(){
-  var futurItemRank = this.getPreviousItemRank();
-  this.updateCurrentItem(futurItemRank);
-}
-
-
 
 Carousel.prototype.initControlButtonEvent= function(rank, el, that){
   el.addEventListener("click", function(){
@@ -180,10 +178,10 @@ Carousel.prototype.initEvents = function(){
   var that = this;
   if(this.controls.left && this.controls.right){
     this.controls.left.addEventListener("click", function(){
-      that.previous();
+      that.move("previous");
     }, false);
     this.controls.right.addEventListener("click", function(){
-      that.next();
+      that.move("next");
     }, false)
   }
 
@@ -192,7 +190,7 @@ Carousel.prototype.initEvents = function(){
       this.initControlButtonEvent(i, that.controls.buttons[i], that)
     }
   }
-  
+
   if(this.stopOnMouseHover){
     this.carousel.addEventListener("mouseenter", function(){
       that.stopInterval();
@@ -205,7 +203,7 @@ Carousel.prototype.initEvents = function(){
 
 Carousel.prototype.startIntervalFunction = function(that){
   this.intervalFunction = setInterval(function(){
-    that.next();
+    that.move("next");
   },
   this.interval)
 }
