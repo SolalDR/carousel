@@ -1,4 +1,5 @@
 # CAROUSEL JS VANILLA
+<a href="https://codeclimate.com/github/SolalDR/carousel"><img src="https://codeclimate.com/github/SolalDR/carousel/badges/gpa.svg" /></a>
 
 ##Implementer
 
