@@ -1,6 +1,6 @@
 function Carousel(el, config = {}){
   this.carousel = el;
-  this.interval = parseInt(el.getAttribute("data-interval"));
+  this.interval = parseInt(el.getAttribute("data-interval"), 10);
   this.items = el.getElementsByClassName("item-carousel");
   this.currentItem = {};
   this.controls = {};
@@ -26,42 +26,54 @@ function Carousel(el, config = {}){
   }
 }
 
+// Carousel.prototype.setAutoload = function(config){
+//   // Autoload
+//   if(this.carousel.hasAttribute("data-autoload")){
+//     this.autoload = true;
+//   }
+//   if(config.autoload){
+//     this.autoload = config.autoload;
+//   }
+// }
+
+Carousel.prototype.setAttributeBool = function(config, strAttribute){
+  if(config[strAttribute] === false){
+    this[strAttribute] = false;
+  } else {
+    this[strAttribute] = true;
+  }
+}
+
+Carousel.prototype.setAttrIfExist = function(config, strAttribute){
+  if(config[strAttribute]){
+    this[strAttribute] = config[strAttribute];
+  }
+}
+
+Carousel.prototype.thatHasAttributeBool = function(strAttribute, mention=strAttribute){
+  if(this.carousel.hasAttribute(strAttribute)){
+    this[mention] = true;
+  }
+}
+
+
+
 Carousel.prototype.setConfig = function(config) {
 
-  // Autoload
-  if(this.carousel.hasAttribute("data-autoload")){
-    this.autoload = true;
-  }
-  if(config.autoload){
-    this.autoload = config.autoload;
-  }
 
-  // Affichage des flèche de sélection
-  if(config.displayArrowSelectors === false){
-    this.displayArrowSelectors = false;
-  } else {
-    this.displayArrowSelectors = true;
-  }
+  this.thatHasAttributeBool(      "data-autoload", "autoload");
+  this.setAttrIfExist(config,     "autoload");
 
-  // Affichage des boutons de sélection
-  if(config.displayButtonSelectors === false){
-    this.displayButtonSelectors = false;
-  } else {
-    this.displayButtonSelectors = true;
-  }
+  //Display
+  this.setAttributeBool(config,   "displayArrowSelectors" );
+  this.setAttributeBool(config,   "displayButtonSelectors"  );
 
-  // Interval
-  if(config.interval) {
-    this.interval = config.interval;
-  }
+  this.setAttrIfExist(config,     "interval" );
 
-  // Comportement au hover
-  if(this.carousel.hasAttribute("data-stopOnMouseHover")){
-    this.stopOnMouseHover = true;
-  }
-  if(config.stopOnMouseHover){
-    this.stopOnMouseHover = config.stopOnMouseHover;
-  }
+  //Stop on mouse
+  this.thatHasAttributeBool(      "data-stopOnMouseHover", "stopOnMouseHover");
+  this.setAttrIfExist(config,     "stopOnMouseHover"  );
+
 }
 
 Carousel.prototype.getNextItemRank = function(){
@@ -114,6 +126,8 @@ Carousel.prototype.updateCurrentItem = function(rank){
   this.updateButtonsStatus();
 }
 
+
+
 Carousel.prototype.generateSelectors = function(){
   if(this.displayArrowSelectors && !this.controls.left && !this.controls.right){
     var slideLeft = document.createElement("div");
@@ -130,10 +144,8 @@ Carousel.prototype.generateSelectors = function(){
     var buttonContainer = document.createElement("div")
     var buttons = [];
     for (i = 0; i < this.items.length; i++) {
-      (function() {
       buttons.push(document.createElement("input"));
       buttons[i].setAttribute("type", "button");
-      })();
     }
 
     buttonContainer.className = "button_selector";
@@ -146,6 +158,7 @@ Carousel.prototype.generateSelectors = function(){
   }
 }
 
+
 Carousel.prototype.next = function(){
   var futurItemRank = this.getNextItemRank();
   this.updateCurrentItem(futurItemRank);
@@ -155,28 +168,31 @@ Carousel.prototype.previous = function(){
   this.updateCurrentItem(futurItemRank);
 }
 
+
+
+Carousel.prototype.initControlButtonEvent= function(rank, el, that){
+  el.addEventListener("click", function(){
+    that.updateCurrentItem(rank);
+  }, false)
+}
+
 Carousel.prototype.initEvents = function(){
   var that = this;
-  if(this.controls.left){
+  if(this.controls.left && this.controls.right){
     this.controls.left.addEventListener("click", function(){
       that.previous();
     }, false);
-  }
-  if(this.controls.right) {
     this.controls.right.addEventListener("click", function(){
       that.next();
     }, false)
   }
+
   if(this.controls.buttons){
     for(i=0; i<this.controls.buttons.length; i++){
-      (function(){
-        var rank = i;
-        that.controls.buttons[rank].addEventListener("click", function(){
-          that.updateCurrentItem(rank);
-        }, false)
-      })();
+      this.initControlButtonEvent(i, that.controls.buttons[i], that)
     }
   }
+  
   if(this.stopOnMouseHover){
     this.carousel.addEventListener("mouseenter", function(){
       that.stopInterval();

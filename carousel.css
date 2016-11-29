@@ -119,7 +119,11 @@
   z-index: 1; }
   .carousel .item-carousel[data-animation="scrollRight"].active {
     top: 0;
-    left: 0;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
     -webkit-transition: .5s;
     -o-transition: .5s;
     transition: .5s;
