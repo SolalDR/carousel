@@ -1,11 +1,14 @@
-function Carousel(el, config = {}){
+function Carousel(el, config){
   this.carousel = el;
   this.interval = parseInt(el.getAttribute("data-interval"), 10);
   this.items = el.getElementsByClassName("item-carousel");
   this.currentItem = {};
   this.controls = {};
 
-  this.setConfig(config);
+  if(config){
+    this.setConfig(config);
+  }
+
 
   // On détermine si un élement est actif par défault
   for(i=0; i<this.items.length; i++){
@@ -50,7 +53,10 @@ Carousel.prototype.setAttrIfExist = function(config, strAttribute){
   }
 }
 
-Carousel.prototype.thatHasAttributeBool = function(strAttribute, mention=strAttribute){
+Carousel.prototype.thatHasAttributeBool = function(strAttribute, mention){
+  if(!mention){
+    mention =  strAttribute; 
+  }
   if(this.carousel.hasAttribute(strAttribute)){
     this[mention] = true;
   }
